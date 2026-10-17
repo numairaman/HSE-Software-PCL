@@ -1,0 +1,65 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Default deny catch-all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    // Incidents Collection
+    match /incidents/{incidentId} {
+      allow read: if isSignedIn();
+      allow create, update: if isSignedIn() && isValidId(incidentId);
+      allow delete: if isSignedIn() && isValidId(incidentId);
+    }
+
+    // Investigations Collection
+    match /investigations/{investigationId} {
+      allow read: if isSignedIn();
+      allow create, update: if isSignedIn() && isValidId(investigationId);
+      allow delete: if isSignedIn() && isValidId(investigationId);
+    }
+
+    // CAPA Actions Collection
+    match /capa_actions/{actionId} {
+      allow read: if isSignedIn();
+      allow create, update: if isSignedIn() && isValidId(actionId);
+      allow delete: if isSignedIn() && isValidId(actionId);
+    }
+
+    // Import Batches Collection
+    match /import_batches/{batchId} {
+      allow read: if isSignedIn();
+      allow create, update: if isSignedIn() && isValidId(batchId);
+      allow delete: if isSignedIn() && isValidId(batchId);
+    }
+
+    // Audit Events Collection
+    match /audit_events/{eventId} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn() && isValidId(eventId);
+      allow update, delete: if false; // Audit logs are append-only and immutable
+    }
+
+    // Hazards Collection
+    match /hazards/{hazardId} {
+      allow read: if isSignedIn();
+      allow create, update: if isSignedIn() && isValidId(hazardId);
+      allow delete: if isSignedIn() && isValidId(hazardId);
+    }
+
+    // Hazard Counters Collection (for atomic sequential Hazard ID allocation)
+    match /hazard_counters/{counterId} {
+      allow read, write: if isSignedIn() && isValidId(counterId);
+    }
+  }
+}

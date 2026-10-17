@@ -1,0 +1,549 @@
+{
+  "entities": {
+    "Incident": {
+      "title": "Incident",
+      "description": "Workplace safety incident or event record imported from Excel register or logged via system",
+      "type": "object",
+      "properties": {
+        "eventId": {
+          "type": "string",
+          "description": "Unique business event identifier e.g. EVT-2026-0001",
+          "maxLength": 64
+        },
+        "title": {
+          "type": "string",
+          "description": "Brief headline of the incident",
+          "maxLength": 300
+        },
+        "eventType": {
+          "type": "string",
+          "description": "Classification e.g. Near Miss, First Aid, Medical Treatment, Lost Time Injury",
+          "maxLength": 100
+        },
+        "occurrenceDate": {
+          "type": "string",
+          "description": "Date incident occurred YYYY-MM-DD",
+          "maxLength": 20
+        },
+        "occurrenceTime": {
+          "type": "string",
+          "description": "Time incident occurred HH:MM",
+          "maxLength": 20
+        },
+        "department": {
+          "type": "string",
+          "description": "Responsible department name",
+          "maxLength": 150
+        },
+        "location": {
+          "type": "string",
+          "description": "Facility or plant location name",
+          "maxLength": 150
+        },
+        "eventCategory": {
+          "type": "string",
+          "description": "Category e.g. Safety, Health, Environment, Quality",
+          "maxLength": 100
+        },
+        "actualConsequence": {
+          "type": "string",
+          "description": "Description of actual consequence",
+          "maxLength": 2000
+        },
+        "potentialConsequence": {
+          "type": "string",
+          "description": "Potential worse-case consequence",
+          "maxLength": 2000
+        },
+        "immediateActionsTaken": {
+          "type": "string",
+          "description": "Actions executed immediately upon occurrence",
+          "maxLength": 2000
+        },
+        "initialRiskClassification": {
+          "type": "string",
+          "description": "Risk rating at reporting time: Low, Medium, High, Critical",
+          "maxLength": 50
+        },
+        "potentialRiskClassification": {
+          "type": "string",
+          "description": "Potential risk rating: Low, Medium, High, Critical",
+          "maxLength": 50
+        },
+        "status": {
+          "type": "string",
+          "description": "Current workflow status e.g. Reported, Under Investigation, Closed",
+          "maxLength": 50
+        },
+        "personsInvolved": {
+          "type": "string",
+          "description": "Names of workers or personnel involved",
+          "maxLength": 500
+        },
+        "importBatchId": {
+          "type": "string",
+          "description": "Identifier of import batch if imported via Excel register",
+          "maxLength": 100
+        },
+        "importedAt": {
+          "type": "string",
+          "description": "ISO timestamp when record was imported",
+          "maxLength": 50
+        },
+        "source": {
+          "type": "string",
+          "description": "Source origin: Excel Import or Manual",
+          "maxLength": 50
+        }
+      },
+      "required": [
+        "eventId",
+        "title",
+        "eventType",
+        "occurrenceDate",
+        "department",
+        "location",
+        "status"
+      ]
+    },
+    "Investigation": {
+      "title": "Investigation",
+      "description": "Root cause analysis report linked to an incident",
+      "type": "object",
+      "properties": {
+        "reportId": {
+          "type": "string",
+          "description": "Unique investigation report ID e.g. INV-2026-0001",
+          "maxLength": 64
+        },
+        "eventId": {
+          "type": "string",
+          "description": "Reference to parent incident eventId",
+          "maxLength": 64
+        },
+        "status": {
+          "type": "string",
+          "description": "Investigation status e.g. Open, Draft, Under Review, Approved, Closed",
+          "maxLength": 50
+        },
+        "rootCauseCategory": {
+          "type": "string",
+          "description": "Primary root cause category",
+          "maxLength": 150
+        },
+        "immediateCauses": {
+          "type": "string",
+          "description": "Immediate causal factors identified",
+          "maxLength": 2000
+        },
+        "contributingFactors": {
+          "type": "string",
+          "description": "Secondary contributing factors",
+          "maxLength": 2000
+        },
+        "finalRootCause": {
+          "type": "string",
+          "description": "Synthesized final root cause determination",
+          "maxLength": 2000
+        },
+        "investigationDueDate": {
+          "type": "string",
+          "description": "Target completion date YYYY-MM-DD",
+          "maxLength": 30
+        }
+      },
+      "required": [
+        "reportId",
+        "eventId",
+        "status"
+      ]
+    },
+    "CapaAction": {
+      "title": "CapaAction",
+      "description": "CAPA action item linked to an incident or investigation",
+      "type": "object",
+      "properties": {
+        "actionId": {
+          "type": "string",
+          "description": "Unique action identifier e.g. ACT-2026-0001",
+          "maxLength": 64
+        },
+        "sourceModule": {
+          "type": "string",
+          "description": "Source module e.g. Incident, Hazard, Inspection",
+          "maxLength": 50
+        },
+        "sourceRecordId": {
+          "type": "string",
+          "description": "Source record eventId or reportId",
+          "maxLength": 64
+        },
+        "recommendedAction": {
+          "type": "string",
+          "description": "Detailed corrective or preventive action to take",
+          "maxLength": 2000
+        },
+        "actionType": {
+          "type": "string",
+          "description": "Corrective, Preventive, or Improvement",
+          "maxLength": 50
+        },
+        "priority": {
+          "type": "string",
+          "description": "Low, Medium, High, or Urgent",
+          "maxLength": 50
+        },
+        "targetDate": {
+          "type": "string",
+          "description": "Target completion date YYYY-MM-DD",
+          "maxLength": 30
+        },
+        "status": {
+          "type": "string",
+          "description": "Open, In Progress, Submitted for Review, Approved, Closed",
+          "maxLength": 50
+        },
+        "department": {
+          "type": "string",
+          "description": "Assigned responsible department",
+          "maxLength": 150
+        }
+      },
+      "required": [
+        "actionId",
+        "sourceRecordId",
+        "recommendedAction",
+        "status"
+      ]
+    },
+    "ImportBatch": {
+      "title": "ImportBatch",
+      "description": "Import run history, stats, and audit results",
+      "type": "object",
+      "properties": {
+        "batchId": {
+          "type": "string",
+          "description": "Unique import batch ID e.g. IMP-2026-0001",
+          "maxLength": 64
+        },
+        "fileName": {
+          "type": "string",
+          "description": "Original uploaded file name",
+          "maxLength": 255
+        },
+        "totalRows": {
+          "type": "integer",
+          "description": "Total records parsed in uploaded sheet"
+        },
+        "importedCount": {
+          "type": "integer",
+          "description": "Count of successfully imported incidents"
+        },
+        "skippedCount": {
+          "type": "integer",
+          "description": "Count of skipped duplicate records"
+        },
+        "failedCount": {
+          "type": "integer",
+          "description": "Count of rows with validation errors"
+        },
+        "importedBy": {
+          "type": "string",
+          "description": "User email or identifier who initiated import",
+          "maxLength": 150
+        },
+        "timestamp": {
+          "type": "string",
+          "description": "ISO timestamp of import completion",
+          "maxLength": 50
+        },
+        "status": {
+          "type": "string",
+          "description": "Success, Completed with Errors, Failed",
+          "maxLength": 50
+        }
+      },
+      "required": [
+        "batchId",
+        "fileName",
+        "totalRows",
+        "importedCount",
+        "status"
+      ]
+    },
+    "AuditEvent": {
+      "title": "AuditEvent",
+      "description": "Audit trail log records for traceability and compliance",
+      "type": "object",
+      "properties": {
+        "action": {
+          "type": "string",
+          "description": "Action performed e.g. IMPORT, CREATE, UPDATE, DELETE",
+          "maxLength": 50
+        },
+        "module": {
+          "type": "string",
+          "description": "Subsystem module name e.g. Incident Register Import",
+          "maxLength": 100
+        },
+        "recordType": {
+          "type": "string",
+          "description": "Type of record modified",
+          "maxLength": 50
+        },
+        "recordId": {
+          "type": "string",
+          "description": "Target identifier e.g. eventId or batchId",
+          "maxLength": 100
+        },
+        "userEmail": {
+          "type": "string",
+          "description": "Actor user email",
+          "maxLength": 150
+        },
+        "timestamp": {
+          "type": "string",
+          "description": "ISO timestamp of occurrence",
+          "maxLength": 50
+        },
+        "details": {
+          "type": "string",
+          "description": "Detailed summary or audit log message",
+          "maxLength": 2000
+        }
+      },
+      "required": [
+        "action",
+        "module",
+        "recordId",
+        "userEmail",
+        "timestamp"
+      ]
+    },
+    "Hazard": {
+      "title": "Hazard",
+      "description": "Workplace hazard observation and register record imported via Excel or manually logged",
+      "type": "object",
+      "properties": {
+        "hazardId": {
+          "type": "string",
+          "description": "Unique Hazard ID e.g. HAZ-000001",
+          "maxLength": 64
+        },
+        "title": {
+          "type": "string",
+          "description": "Hazard title or description",
+          "maxLength": 500
+        },
+        "hazardCategory": {
+          "type": "string",
+          "description": "Hazard classification category",
+          "maxLength": 100
+        },
+        "department": {
+          "type": "string",
+          "description": "Department name",
+          "maxLength": 150
+        },
+        "location": {
+          "type": "string",
+          "description": "Location or work area",
+          "maxLength": 150
+        },
+        "activity": {
+          "type": "string",
+          "description": "Activity or task during which hazard occurs",
+          "maxLength": 255
+        },
+        "hazardSource": {
+          "type": "string",
+          "description": "Physical source or root element of hazard",
+          "maxLength": 255
+        },
+        "potentialConsequences": {
+          "type": "string",
+          "description": "Potential consequences and injuries",
+          "maxLength": 1000
+        },
+        "personsAtRisk": {
+          "type": "string",
+          "description": "Groups or personnel exposed to hazard",
+          "maxLength": 255
+        },
+        "existingControls": {
+          "type": "string",
+          "description": "Currently in place safeguards and controls",
+          "maxLength": 1000
+        },
+        "likelihood": {
+          "type": "integer",
+          "description": "Initial Likelihood rating 1 to 5"
+        },
+        "severity": {
+          "type": "integer",
+          "description": "Initial Severity rating 1 to 5"
+        },
+        "initialRiskScore": {
+          "type": "integer",
+          "description": "Initial risk score (likelihood x severity)"
+        },
+        "initialRiskRating": {
+          "type": "string",
+          "description": "Initial Risk Rating e.g. Low, Medium, High, Critical",
+          "maxLength": 50
+        },
+        "additionalControls": {
+          "type": "string",
+          "description": "Proposed or additional controls",
+          "maxLength": 1000
+        },
+        "residualLikelihood": {
+          "type": "integer",
+          "description": "Residual Likelihood 1 to 5"
+        },
+        "residualSeverity": {
+          "type": "integer",
+          "description": "Residual Severity 1 to 5"
+        },
+        "residualRiskScore": {
+          "type": "integer",
+          "description": "Residual risk score"
+        },
+        "residualRiskRating": {
+          "type": "string",
+          "description": "Residual Risk Rating",
+          "maxLength": 50
+        },
+        "responsiblePerson": {
+          "type": "string",
+          "description": "Assigned responsible person",
+          "maxLength": 150
+        },
+        "targetCompletionDate": {
+          "type": "string",
+          "description": "Target completion date YYYY-MM-DD",
+          "maxLength": 50
+        },
+        "status": {
+          "type": "string",
+          "description": "Status e.g. Open, In Progress, Closed",
+          "maxLength": 50
+        },
+        "dateIdentified": {
+          "type": "string",
+          "description": "Date hazard was identified",
+          "maxLength": 50
+        },
+        "reportedBy": {
+          "type": "string",
+          "description": "Identifier or name of reporter",
+          "maxLength": 150
+        },
+        "sourceReference": {
+          "type": "string",
+          "description": "External reference number or document link",
+          "maxLength": 150
+        },
+        "remarks": {
+          "type": "string",
+          "description": "Additional notes and observations",
+          "maxLength": 1000
+        },
+        "customFields": {
+          "type": "string",
+          "description": "JSON string containing retained unmapped custom columns",
+          "maxLength": 4000
+        },
+        "importBatchId": {
+          "type": "string",
+          "description": "Batch ID if imported from Excel register",
+          "maxLength": 100
+        },
+        "originalFileName": {
+          "type": "string",
+          "description": "Excel file name used during import",
+          "maxLength": 255
+        },
+        "importedAt": {
+          "type": "string",
+          "description": "ISO timestamp of import",
+          "maxLength": 50
+        },
+        "importedBy": {
+          "type": "string",
+          "description": "User who ran the import",
+          "maxLength": 150
+        },
+        "recordSource": {
+          "type": "string",
+          "description": "Excel Import or Manual",
+          "maxLength": 50
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Creation timestamp",
+          "maxLength": 50
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "Last updated timestamp",
+          "maxLength": 50
+        }
+      },
+      "required": [
+        "hazardId",
+        "title",
+        "status"
+      ]
+    },
+    "HazardCounter": {
+      "title": "HazardCounter",
+      "description": "Sequential counter document for allocating atomic unique Hazard IDs",
+      "type": "object",
+      "properties": {
+        "lastNumber": {
+          "type": "integer",
+          "description": "Latest allocated sequential integer"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "ISO timestamp of counter modification",
+          "maxLength": 50
+        }
+      },
+      "required": [
+        "lastNumber"
+      ]
+    }
+  },
+  "firestore": {
+    "/incidents/{incidentId}": {
+      "schema": "Incident",
+      "description": "Imported and recorded workplace safety incident events"
+    },
+    "/investigations/{investigationId}": {
+      "schema": "Investigation",
+      "description": "Root cause analyses and incident investigation reports linked to incidents"
+    },
+    "/capa_actions/{actionId}": {
+      "schema": "CapaAction",
+      "description": "Corrective and preventive action tracking items linked to imported incidents"
+    },
+    "/import_batches/{batchId}": {
+      "schema": "ImportBatch",
+      "description": "Summary metadata and error reports for Excel incident register import runs"
+    },
+    "/audit_events/{eventId}": {
+      "schema": "AuditEvent",
+      "description": "Audit trail log records for security and compliance"
+    },
+    "/hazards/{hazardId}": {
+      "schema": "Hazard",
+      "description": "Workplace hazard register records imported from Excel or created manually"
+    },
+    "/hazard_counters/{counterId}": {
+      "schema": "HazardCounter",
+      "description": "Atomic sequence counter document for unique Hazard ID generation"
+    }
+  }
+}
